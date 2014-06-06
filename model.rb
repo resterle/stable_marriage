@@ -10,24 +10,33 @@ women :set,
 
 Anna :prefers,
   :Otto,
-  :Peter
+  :Peter,
+  :Hans
 
 Jana :prefers,
   :Hans,
-  :Peter
-
-Gabi :prefers,
+  :Peter,
   :Otto
 
-Hans :prefers,
-  :Anna
+Gabi :prefers,
+  :Otto,
+  :Hans,
+  :Peter
 
-Peter :prefers,
+Hans :prefers,
+  :Anna,
   :Gabi,
   :Jana
 
+Peter :prefers,
+  :Gabi,
+  :Jana,
+  :Anna
+
 Otto :prefers,
-  :Gabi
+  :Gabi,
+  :Anna,
+  :Jana
 
 puts women :get 
 puts men :get 
