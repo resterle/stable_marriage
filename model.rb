@@ -1,42 +1,42 @@
 men :set,
-  :Hans,
-  :Peter,
-  :Otto
+  :Ken,
+  :Leo,
+  :Max
 
 women :set,
-  :Anna,
-  :Jana,
-  :Gabi
+  :Ada,
+  :Bev,
+  :Cat
 
-Anna :prefers,
-  :Otto,
-  :Peter,
-  :Hans
+Ada :prefers,
+  :Ken,
+  :Leo,
+  :Max
 
-Jana :prefers,
-  :Hans,
-  :Peter,
-  :Otto
+Bev :prefers,
+  :Leo,
+  :Max,
+  :Ken
 
-Gabi :prefers,
-  :Otto,
-  :Hans,
-  :Peter
+Cat :prefers,
+  :Max,
+  :Leo,
+  :Ken
 
-Hans :prefers,
-  :Anna,
-  :Gabi,
-  :Jana
+Ken :prefers,
+  :Bev,
+  :Cat,
+  :Ada
 
-Peter :prefers,
-  :Gabi,
-  :Jana,
-  :Anna
+Leo:prefers,
+  :Ada,
+  :Cat,
+  :Bev
 
-Otto :prefers,
-  :Gabi,
-  :Anna,
-  :Jana
+Max :prefers,
+  :Ada,
+  :Bev,
+  :Cat
 
 puts women :get 
 puts men :get 
