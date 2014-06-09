@@ -1,3 +1,5 @@
+require 'graphviz'
+
 class Model
   def men option, *args
     object :man, option, args
@@ -56,6 +58,10 @@ class Task
     @model = model.dup
   end
   
+  def result
+    @pairs
+  end
+
   def propose obj_0, obj_1
     @proposes[obj_0] ||= []
     @proposes[obj_0] << obj_1
@@ -110,19 +116,55 @@ class Task
       make_proposes
       process_proposes
     end
-    puts "stable: #{@pairs}"
   end 
+end
+
+class Visualize
+  
+  def model= model
+    @model = model
+    puts "model: #{model}"
+  end
+
+  def create_image name
+    g = GraphViz.new(:G, :type => :digraph)
+    @model.each do |k, v|
+      puts "k: #{k} v:#{v.class}"
+      if v.is_a? Hash
+        v.each do |name, likes|
+          n0 = g.add_nodes(name.to_s)
+          likes.each do |l|
+            n1 = g.add_nodes(l.to_s)
+            g.add_edges(n0, n1)
+          end
+        end
+      else
+        n0 = g.add_nodes(k.to_s)
+        n1 = g.add_nodes(v.to_s)
+        g.add_edges(n0, n1)
+      end
+    end
+    g.output( :png => "#{name}.png")
+  end
 end
 
 if __FILE__ == $0
   if ARGV.size>1
-    puts 'Usage: match <model.rb>'
+    puts 'Usage: match <model.rb> <output.png>'
     exit 1
   end
   model = Model.new
   model.instance_eval(File.open(ARGV.shift).read)
 
+  v = Visualize.new
+  v.model = model.objects
+  v.create_image 'likes'
+
   task = Task.new
   task.model = model
   task.stable_matching
+
+  puts "stable: #{task.result}"
+  v.model = task.result
+  v.create_image 'result'
 end
