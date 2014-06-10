@@ -2,7 +2,7 @@ require 'graphviz'
 
 class Model
   def men option, *args
-    object :man, option, args
+    object :men, option, args
   end 
 
   def women option, *args
@@ -156,12 +156,13 @@ class Visualize
   end
 
   def create_image name
-    g = GraphViz.new(:G, :type => :digraph)
+    label = "blue=#{@model.keys[0]} red=#{@model.keys[1]} green=matched"
+    g = GraphViz.new(:G, {:type => :digraph, :label => label, :splines => 'polyline'})
     @model.each do |k, v|
       if v.is_a? Hash
         @color = "blue" unless @color
         @graphs ||= {}
-        @graphs[k] = g.add_graph(k.to_s, {:label => k.to_s, :color => @color.dup})
+        @graphs[k] = g.add_graph(k.to_s, :label => k.to_s)
         v.each_key do |name|
           @graphs[k].add_node(name.to_s, :color => @color.dup)
         end
