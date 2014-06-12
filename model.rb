@@ -37,6 +37,3 @@ Max :prefers,
   :Ada,
   :Bev,
   :Cat
-
-puts women :get 
-puts men :get 
