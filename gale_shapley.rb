@@ -19,42 +19,14 @@ class Visualize
     end
     n
   end 
-
-  def create_edges a
-    @model.each do |group, obj|
-      obj.each do |name, likes|
-        n0 = @graphs[group].get_node name.to_s
-        c = 1
-        likes.each do |like|
-          color = 'gray'
-          if @pairs[like] == name
-            color = 'green'
-          end 
-          if @pairs[name] == like
-            color = 'black'
-          end
-          if((!a&&color!='gray') or a)
-            n1 = search_node like, group 
-            cg = GraphViz::commonGraph(n1, n0)
-            cg.add_edge(n0, n1, {
-              :color => color,
-              :taillabel => c.to_s,
-              :labeldistance => 2,
-              :labelfontsize => 14,
-              :labelfloat => true})
-          end
-          c +=1
-        end
-      end
-    end
-  end
   
   def create_image2 name
     g = GraphViz.new(:G, {
-      :type => :graph,
+      :type => :digraph,
       :ranksep => '3',
       :nodesep => '1',
-      :rankdir => 'LR'
+      :rankdir => 'LR',
+      :splines => 'line'
       })
     @model.each do |k, v|
       @color = "blue" unless @color
@@ -77,6 +49,7 @@ class Visualize
         color = 'black'
         color = 'green' if @pairs[name] == like || @pairs[like] == name
         taillabel = @model[group][name].find_index(like) +1 
+        #puts "#{name} .. #{like}"
         headlabel = @model[@model.keys[1]][like].find_index(name) +1
         GraphViz::commonGraph(n1, n0).add_edge(n0, n1, {
               :color => color,
@@ -93,11 +66,11 @@ end
 
 class Model
   def men option, *args
-    object :men, option, args
+    object :men, option, *args
   end 
 
   def women option, *args
-    object :women, option, args
+    object :women, option, *args
   end
   
   def first_group first=nil
@@ -118,7 +91,7 @@ class Model
     @objects[key] 
   end
 
-  def object group,  option, args
+  def object group,  option, *args
     @objects ||= {}
     @objects[group] ||= {} 
     case option
@@ -159,7 +132,7 @@ end
 class Task
   
   def stable_matching first=nil
-    @first = first
+    @first = first if first
     while not stable_match?
       make_proposes
       process_proposes
@@ -267,4 +240,5 @@ if __FILE__ == $0
   v.model = model2.objects
   v.pairs = task.result
   v.create_image2 output
+  puts task.result
 end
